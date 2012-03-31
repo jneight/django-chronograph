@@ -117,7 +117,8 @@ class JobAdmin(admin.ModelAdmin):
         # simply force the Job to be run by the next cron job
         job.force_run = True
         job.save()
-        request.user.message_set.create(message=_('The job "%(job)s" has been scheduled to run.') % {'job': job})        
+        from django.contrib import messages
+        messages.success(request, _('The job "%(job)s" was run successfully.') % {'job': job}) 
         if 'inline' in request.GET:
             redirect = request.path + '../../'
         else:
